@@ -1,5 +1,11 @@
 # Python Project Template
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+[![CI](https://github.com/azure-architect/claude-code/workflows/CI/badge.svg)](https://github.com/azure-architect/claude-code/actions)
+
 A comprehensive, production-ready Python project template with best practices, automated tooling, and Claude Code integration.
 
 ## ✨ Features
@@ -30,7 +36,7 @@ cd YOUR_NEW_PROJECT
 #### Option B: Direct Clone
 ```bash
 # Clone this template
-git clone https://github.com/YOUR_USERNAME/python-project-template.git my-new-project
+git clone https://github.com/azure-architect/claude-code.git my-new-project
 cd my-new-project
 
 # Remove original git history

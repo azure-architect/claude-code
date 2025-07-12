@@ -22,7 +22,7 @@ python scripts/init_project.py \
 ### Option 2: Direct Clone
 ```bash
 # 1. Clone this template
-git clone https://github.com/YOUR_USERNAME/python-project-template.git your-new-project
+git clone https://github.com/azure-architect/claude-code.git your-new-project
 cd your-new-project
 
 # 2. Remove original git history and start fresh
@@ -233,7 +233,7 @@ Keep your projects updated with template improvements:
 
 ```bash
 # Check for template updates
-git remote add template https://github.com/YOUR_USERNAME/python-project-template.git
+git remote add template https://github.com/azure-architect/claude-code.git
 git fetch template
 
 # Merge updates (carefully)
