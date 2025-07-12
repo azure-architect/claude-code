@@ -18,10 +18,24 @@ A comprehensive, production-ready Python project template with best practices, a
 
 ### 1. Use This Template
 
+#### Option A: GitHub Template (Recommended)
 ```bash
-# Clone or copy this template to your new project directory
-cp -r /path/to/this/template /path/to/your/new/project
-cd /path/to/your/new/project
+# 1. Click "Use this template" button on GitHub
+# 2. Create your new repository
+# 3. Clone your new repository
+git clone https://github.com/YOUR_USERNAME/YOUR_NEW_PROJECT.git
+cd YOUR_NEW_PROJECT
+```
+
+#### Option B: Direct Clone
+```bash
+# Clone this template
+git clone https://github.com/YOUR_USERNAME/python-project-template.git my-new-project
+cd my-new-project
+
+# Remove original git history
+rm -rf .git
+git init
 ```
 
 ### 2. Initialize Your Project
