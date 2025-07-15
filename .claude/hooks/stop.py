@@ -11,6 +11,7 @@ import os
 import time
 import re
 import psutil
+import shutil
 from datetime import datetime
 from pathlib import Path
 import hashlib
@@ -19,10 +20,11 @@ import hashlib
 LOG_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "logs")
 ARTIFACTS_DIR = os.path.join(LOG_DIR, "artifacts")
 SESSION_SUMMARY_DIR = os.path.join(LOG_DIR, "summaries")
+TRANSCRIPTS_DIR = os.path.join(LOG_DIR, "transcripts")
 
 def ensure_directories_exist():
     """Create necessary directories if they don't exist."""
-    for directory in [LOG_DIR, ARTIFACTS_DIR, SESSION_SUMMARY_DIR]:
+    for directory in [LOG_DIR, ARTIFACTS_DIR, SESSION_SUMMARY_DIR, TRANSCRIPTS_DIR]:
         os.makedirs(directory, exist_ok=True)
 
 def log_json(data, prefix="log"):
@@ -47,6 +49,24 @@ def extract_system_state():
         "threads": len(process.threads()),
         "system_time": time.time()
     }
+
+def copy_transcript_to_project(transcript_path, session_id):
+    """Copy the transcript file to the project's transcript directory."""
+    if not os.path.exists(transcript_path):
+        print(f"Transcript file not found: {transcript_path}", file=sys.stderr)
+        return None
+    
+    # Copy to project transcript directory
+    filename = f"{session_id}.jsonl"
+    dest_path = os.path.join(TRANSCRIPTS_DIR, filename)
+    
+    try:
+        shutil.copy2(transcript_path, dest_path)
+        print(f"Transcript copied to project: {dest_path}", file=sys.stderr)
+        return dest_path
+    except Exception as e:
+        print(f"Failed to copy transcript: {str(e)}", file=sys.stderr)
+        return None
 
 def parse_chat_transcript(transcript_path):
     """Parse the chat transcript to extract messages and tool calls."""
@@ -163,7 +183,7 @@ def extract_tool_calls(transcript_data):
         "by_type": tool_stats
     }
 
-def generate_session_summary(transcript_data, system_state, artifacts, tool_calls):
+def generate_session_summary(transcript_data, system_state, artifacts, tool_calls, project_transcript_path=None):
     """Generate a summary of the session."""
     summary = {
         "timestamp": datetime.now().isoformat(),
@@ -174,6 +194,10 @@ def generate_session_summary(transcript_data, system_state, artifacts, tool_call
         "tool_calls_count": tool_calls.get("count", 0),
         "tool_calls_by_type": tool_calls.get("by_type", {}),
     }
+    
+    # Add project transcript path if available
+    if project_transcript_path:
+        summary["project_transcript_path"] = project_transcript_path
     
     # Try to calculate session duration
     messages = transcript_data.get("messages", [])
@@ -239,8 +263,12 @@ def main():
     # Extract system state
     system_state = extract_system_state()
     
-    # Get the transcript path from the input
+    # Get the transcript path and session ID from the input
     transcript_path = input_data.get("transcript_path")
+    session_id = input_data.get("session_id")
+    
+    # Copy transcript to project directory
+    project_transcript_path = copy_transcript_to_project(transcript_path, session_id)
     
     # Parse the chat transcript
     transcript_data = parse_chat_transcript(transcript_path)
@@ -256,7 +284,8 @@ def main():
         transcript_data, 
         system_state, 
         artifacts, 
-        tool_calls
+        tool_calls,
+        project_transcript_path
     )
     
     # Save session summary
@@ -265,11 +294,13 @@ def main():
     # Log success message
     print(f"Session state captured successfully.", file=sys.stderr)
     print(f"Transcript processed: {transcript_path}", file=sys.stderr)
+    if project_transcript_path:
+        print(f"Transcript copied to project: {project_transcript_path}", file=sys.stderr)
     print(f"Summary saved to: {summary_path}", file=sys.stderr)
     print(f"Artifacts extracted: {len(artifacts)}", file=sys.stderr)
     
     # Announce completion using TTS
-    announce_completion()
+    # announce_completion()
     
     # Exit with success
     sys.exit(0)
