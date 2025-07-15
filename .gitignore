@@ -266,7 +266,17 @@ tmp/
 temp/
 .tmp/
 
-# Claude Code (keep configuration, exclude logs)
+# Claude Code
+# Keep configuration, exclude logs and local settings
 !.claude/
+!.claude/hooks/
+!.claude/commands/
+!.claude/settings.json
 .claude/logs/
+.claude/logs/transcripts/
+.claude/logs/artifacts/
+.claude/logs/summaries/
 .claude/settings.local.json
+
+# Deleted files backup (keep local only)
+.deleted_files/

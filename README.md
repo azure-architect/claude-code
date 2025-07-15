@@ -1,259 +1,127 @@
-# Python Project Template
+# Claude Code Integration
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
-[![CI](https://github.com/azure-architect/claude-code/workflows/CI/badge.svg)](https://github.com/azure-architect/claude-code/actions)
 
-A comprehensive, production-ready Python project template with best practices, automated tooling, and Claude Code integration.
+A streamlined Claude Code integration template with advanced hooks for context engineering and transcript preservation.
 
 ## ✨ Features
 
-- **🏗️ Modern Project Structure**: Standard `src/` layout with proper packaging
-- **🔧 Complete Tooling Setup**: Black, isort, mypy, pylint, pytest, pre-commit
-- **🤖 Claude Code Integration**: Advanced hooks and command templates
-- **📦 Dependency Management**: pyproject.toml with optional dependencies
-- **🚀 One-Command Setup**: Automated project initialization script
-- **🔒 Security Best Practices**: Bandit, secure coding patterns
-- **📊 Test Coverage**: pytest with coverage reporting
-- **🐳 Docker Ready**: Configuration for containerized development
-- **⚡ CI/CD Ready**: GitHub Actions workflows included
+- **🧠 Context Engineering**: Preserve conversation context and session history
+- **🪝 Advanced Hooks**: Pre/post tool execution and session completion hooks
+- **📝 Transcript Storage**: Automatically save conversation transcripts in your project
+- **💻 Code Extraction**: Extract and save code artifacts from conversations
+- **🔍 Quality Validation**: Enforce coding standards and best practices
 
 ## 🚀 Quick Start
 
-### 1. Use This Template
-
-#### Option A: GitHub Template (Recommended)
-```bash
-# 1. Click "Use this template" button on GitHub
-# 2. Create your new repository
-# 3. Clone your new repository
-git clone https://github.com/YOUR_USERNAME/YOUR_NEW_PROJECT.git
-cd YOUR_NEW_PROJECT
-```
-
-#### Option B: Direct Clone
-```bash
-# Clone this template
-git clone https://github.com/azure-architect/claude-code.git my-new-project
-cd my-new-project
-
-# Remove original git history
-rm -rf .git
-git init
-```
-
-### 2. Initialize Your Project
+### Adding to an Existing Project
 
 ```bash
-# Run the initialization script
-python scripts/init_project.py \
-    --project-name "my-awesome-project" \
-    --author-name "Your Name" \
-    --author-email "your.email@example.com"
+# In your existing project directory
+git clone https://github.com/your-username/claude-code.git .claude
+
+# Optionally remove git history
+rm -rf .claude/.git
+
+# Add to .gitignore
+echo ".claude/logs/" >> .gitignore
+echo ".claude/settings.local.json" >> .gitignore
 ```
 
-This will:
-- ✅ Customize project files with your information
-- ✅ Initialize git repository with initial commit
-- ✅ Create virtual environment (`.venv/`)
-- ✅ Install all dependencies
-- ✅ Setup pre-commit hooks
-- ✅ Run initial validation
-
-### 3. Start Developing
-
-```bash
-# Activate virtual environment
-source .venv/bin/activate
-
-# Start coding in src/
-# Add tests in tests/
-# Run development commands as needed
-```
-
-## 🛠️ Development Commands
-
-### Code Quality
-```bash
-black .              # Format code
-isort .              # Sort imports
-mypy src             # Type checking
-pylint src           # Linting
-bandit -r src        # Security scanning
-```
-
-### Testing
-```bash
-pytest               # Run tests
-pytest --cov=src     # Run tests with coverage
-pytest -v            # Verbose test output
-pytest -k "test_name" # Run specific tests
-```
-
-### Pre-commit
-```bash
-pre-commit install     # Install hooks
-pre-commit run --all-files  # Run on all files
-```
-
-### Documentation
-```bash
-# If using Sphinx (optional)
-cd docs
-make html
-```
-
-## 📁 Project Structure
+## 📁 Claude Code Structure
 
 ```
-.
-├── .claude/                 # Claude Code configuration
-│   ├── commands/           # Reusable command templates
-│   ├── hooks/              # Pre/post tool execution hooks
-│   └── settings.json       # Claude Code settings
-├── .github/                # GitHub Actions workflows
-│   └── workflows/
-├── docs/                   # Documentation
-├── src/                    # Source code
-│   └── __init__.py
-├── tests/                  # Test files
-│   ├── __init__.py
-│   └── conftest.py
-├── scripts/                # Utility scripts
-│   └── init_project.py     # Project initialization
-├── .gitignore             # Git ignore rules
-├── .pre-commit-config.yaml # Pre-commit configuration
-├── docker-compose.yml     # Docker services
-├── Dockerfile             # Docker image
-├── pyproject.toml         # Project configuration
-└── README.md              # This file
+.claude/
+├── hooks/                 # Hook implementations
+│   ├── pre_tool_use.py    # Validates before file changes
+│   ├── post_tool_use.py   # Formats after file changes
+│   ├── stop.py            # Manages session completion
+│   └── task_completion.py # Verifies task completion
+├── commands/              # Reusable command templates
+├── logs/                  # Generated logs and artifacts (gitignored)
+│   ├── transcripts/       # Conversation history
+│   ├── artifacts/         # Extracted code
+│   └── summaries/         # Session summaries
+├── settings.json          # Shared configuration
+└── settings.local.json    # Local overrides (gitignored)
 ```
 
-## 🔧 Configuration Details
+## ⚙️ Hook System
 
-### pyproject.toml
-- **Build system**: setuptools with wheel
-- **Dependencies**: Organized with optional groups (dev, docs, test)
-- **Tool configuration**: Black, isort, mypy, pytest, coverage, pylint, bandit
-- **Project metadata**: Author, license, classifiers
+### PreToolUse Hook
+- Validates file content before changes are made
+- Enforces coding standards (type annotations, security practices)
+- Checks for required elements based on file type and purpose
+- Blocks changes that would compromise context quality
 
-### Pre-commit Hooks
-- **black**: Code formatting
-- **isort**: Import sorting
-- **mypy**: Type checking
-- **pylint**: Code linting
-- **bandit**: Security scanning
-- **trailing-whitespace**: Remove trailing spaces
-- **end-of-file-fixer**: Ensure files end with newline
+### PostToolUse Hook
+- Automatically formats code after changes
+- Performs type checking
+- Ensures consistent style across project files
+- Can block tool completion if issues are detected
 
-### Claude Code Integration
-- **Validation hooks**: Enforce code quality before writing files
-- **Command templates**: `/document`, `/implement`, `/test` commands
-- **Security checks**: Block `os.system()`, require SSL for email clients
-- **File length limits**: 500 lines maximum per file
-- **Type annotation enforcement**: All functions must have return types
+### Stop Hook
+- Captures comprehensive session state
+- Extracts and logs code artifacts from conversations
+- Copies transcripts to the project directory
+- Generates session summaries for reference
 
-## 🐳 Docker Development
+### Task Completion Hook
+- Validates task completion criteria
+- Checks test coverage
+- Ensures documentation standards
+- Can block task completion if requirements aren't met
 
-```bash
-# Build development image
-docker build -t my-project .
+## 🔧 Configuration
 
-# Run development container
-docker-compose up -d
+The `settings.json` file contains the core configuration:
 
-# Execute commands in container
-docker-compose exec app bash
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "Bash(mkdir -p *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .claude/hooks/pre_tool_use.py"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [...],
+    "Stop": [...]
+  }
+}
 ```
 
-## 🚀 CI/CD Pipeline
+You can override settings locally by creating a `.claude/settings.local.json` file (which won't be committed to git).
 
-The included GitHub Actions workflow provides:
-- ✅ Multi-Python version testing (3.9, 3.10, 3.11, 3.12)
-- ✅ Code quality checks (black, isort, mypy, pylint)
-- ✅ Security scanning (bandit)
-- ✅ Test execution with coverage reporting
-- ✅ Documentation building
-- ✅ Artifact uploading
+## 📚 Context Engineering Approach
 
-## 📋 Best Practices Enforced
+This template implements a context engineering approach for AI-assisted project management, treating context as a deliberately engineered resource rather than an accidental byproduct.
 
-### Code Quality
-- **Type annotations**: All functions must have return type annotations
-- **Line length**: 88 characters (Black standard)
-- **Import organization**: isort with Black profile
-- **Docstrings**: Required for all public functions and classes
-- **Error handling**: Proper exception handling patterns
+The key principles include:
+- **Context as Infrastructure**: Treat project context as a foundational resource
+- **Systematic Discovery**: Use structured approaches to gather project understanding
+- **Adaptive Planning**: Build plans that evolve while preserving core context
+- **Continuous Context Management**: Maintain and update context throughout execution
 
-### Security
-- **No `os.system()`**: Use subprocess instead
-- **SSL required**: For email and network clients
-- **Secret scanning**: Bandit security linting
-- **Dependency scanning**: Via GitHub Actions (optional)
+## 🔄 Usage with Projects
 
-### Testing
-- **90%+ coverage**: Enforced via pytest-cov
-- **Test organization**: Unit, integration, and slow test markers
-- **Fixtures**: Shared test fixtures in conftest.py
-- **Mocking**: Proper dependency isolation
-
-### Documentation
-- **README**: Comprehensive project documentation
-- **Docstrings**: All public APIs documented
-- **Type hints**: Self-documenting code via types
-- **CLAUDE.md**: Development guidance for Claude Code
-
-## 🎯 Development Workflow
-
-1. **Start feature**: Create branch, activate venv
-2. **Write code**: In `src/` with proper types and docstrings
-3. **Write tests**: In `tests/` with good coverage
-4. **Pre-commit check**: Hooks run automatically
-5. **Run tests**: `pytest` with coverage
-6. **Code review**: CI checks pass automatically
-7. **Deploy**: Merge to main triggers deployment
-
-## 🔄 Template Updates
-
-To update projects created from this template:
-
-1. **Check CLAUDE.md**: Review any new development patterns
-2. **Update pyproject.toml**: Compare tool configurations
-3. **Update CI/CD**: Check for new GitHub Actions workflows
-4. **Update hooks**: Check `.claude/hooks/` for improvements
-
-## 📚 Documentation
-
-### Usage Documentation
-- **[Usage Guide](docs/usage.md)** - Complete step-by-step coding workflow
-- **[Examples & Tutorials](docs/examples.md)** - Practical examples (REST API, Data Pipeline, CLI)
-- **[Claude Code Workflow](docs/claude-code-workflow.md)** - Advanced Claude Code integration
-- **[Development Guide](docs/development.md)** - Detailed development patterns
-- **[Troubleshooting](docs/troubleshooting.md)** - Common issues and solutions
-
-### External Resources
-- [Claude Code Documentation](https://docs.anthropic.com/claude-code)
-- [Python Packaging Guide](https://packaging.python.org/)
-- [pytest Documentation](https://docs.pytest.org/)
-- [mypy Documentation](https://mypy.readthedocs.io/)
-- [pre-commit Documentation](https://pre-commit.com/)
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run the full test suite
-5. Submit a pull request
+This template works with projects of any language or structure - it's not limited to Python projects. Simply clone it into any project directory to add Claude Code integration.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License.
 
 ---
 
-**Happy coding! 🎉**
-
-This template provides everything you need for professional Python development with Claude Code integration.
+**Enhance your development workflow with Claude Code! 🚀**
