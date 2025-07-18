@@ -1,0 +1,17 @@
+{
+  "timestamp": "2025-07-17T16:39:04.435362",
+  "session_duration_seconds": null,
+  "message_count": 697,
+  "system_state": {
+    "timestamp": "2025-07-17T16:39:04.428321",
+    "memory_usage_mb": 17.84375,
+    "cpu_percent": 0.0,
+    "open_files": 0,
+    "threads": 1,
+    "system_time": 1752741544.428374
+  },
+  "artifacts_generated": 0,
+  "tool_calls_count": 0,
+  "tool_calls_by_type": {},
+  "project_transcript_path": "/Volumes/Samsung/mo/projects/research/proof-of-concepts/active-development/youtube-kb-04/.claude/logs/transcripts/f9649ca1-b585-40db-8c66-67956bac858a.jsonl"
+}
