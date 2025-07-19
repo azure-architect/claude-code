@@ -1,0 +1,1 @@
+/Volumes/Samsung/mo/projects/ai-automation/claude-code/.claude/hooks/python/pre_tool_use.py

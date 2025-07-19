@@ -1,0 +1,1 @@
+/Volumes/Samsung/mo/projects/ai-automation/claude-code/.claude/hooks/python/post_tool_use.py
