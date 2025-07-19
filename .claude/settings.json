@@ -52,16 +52,6 @@
       },
       {
         "matcher": "Write|Edit|MultiEdit",
-        "filePattern": "*.ts|*.tsx",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "npx ts-node .claude/hooks/typescript/pre_tool_use.ts"
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit|MultiEdit",
         "filePattern": "*.yml|*.yaml",
         "hooks": [
           {
@@ -99,16 +89,6 @@
           {
             "type": "command",
             "command": "php .claude/hooks/php/post_tool_use.php"
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit|MultiEdit",
-        "filePattern": "*.ts|*.tsx",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "npx ts-node .claude/hooks/typescript/post_tool_use.ts"
           }
         ]
       }

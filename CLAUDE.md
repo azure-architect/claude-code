@@ -4,17 +4,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Claude Code integration template that provides advanced hooks, context engineering, and a structured development pipeline. It's designed to enhance AI-assisted development through systematic context preservation and quality enforcement.
+This is a Claude Code integration template that provides advanced hooks, context engineering, and a structured development pipeline. It's designed to enhance AI-assisted development through systematic context preservation and quality enforcement across multiple programming languages.
 
 ## Development Commands
 
 ### Core Commands
-- `black <files>` - Code formatting
-- `pytest <path>` - Run tests
-- `mypy <files>` - Type checking
-- `pylint <files>` - Code linting
-- `isort <files>` - Import sorting
+- `black <files>` - Python code formatting
+- `pytest <path>` - Run Python tests
+- `mypy <files>` - Python type checking
+- `pylint <files>` - Python code linting
+- `isort <files>` - Python import sorting
+- `docker <commands>` - Container operations
 - `git <commands>` - Version control operations
+- `mkdir -p <path>` - Create directories
+- `touch <file>` - Create empty files
 
 ### Available Slash Commands
 - `/implement <task>` - Structured implementation following template patterns
@@ -26,10 +29,19 @@ This is a Claude Code integration template that provides advanced hooks, context
 
 ## Architecture
 
-### Hook System
+### Multi-Language Hook System
+The project supports validation and formatting hooks for multiple languages:
+- **Python** (.py): Type annotations, security patterns, black/isort formatting
+- **JavaScript/JSX** (.js, .jsx): ESLint validation, Prettier formatting
+- **TypeScript/TSX** (.ts, .tsx): Type checking, ESLint, Prettier
+- **PHP** (.php): Syntax validation, code style checking
+- **YAML** (.yml, .yaml): Structure validation
+
+Hook types:
 - **PreToolUse**: Validates files before changes (type annotations, security, file length <500 lines)
-- **PostToolUse**: Formats code automatically with black/isort after changes
+- **PostToolUse**: Formats code automatically after changes
 - **Stop**: Captures session state, extracts artifacts, generates summaries
+- **TaskCompletion**: Processes completed tasks and updates pipeline
 
 ### Pipeline Structure
 Development follows a 5-stage pipeline:
@@ -45,28 +57,32 @@ Self-contained context capsules that include:
 - Project context and dependency mapping
 - Decision history and rationale
 - Validation criteria and test requirements
+- Documentation requirements
 
 ## Code Quality Standards
 
 ### Required Patterns
-- All functions must have type annotations
+- All functions must have type annotations (Python)
 - Docstrings required for public functions
 - Security patterns enforced (no os.system, require SSL for SMTP)
 - Files limited to 500 lines maximum
 - Comprehensive error handling
+- Language-appropriate style enforcement
 
 ### Testing Requirements
-- Use pytest with fixtures
+- Use pytest with fixtures for Python
 - Aim for 90%+ test coverage
 - Include edge cases and error conditions
 - Add integration tests for complex systems
 - Test TTL expiration, timeouts, and failure scenarios
+- Mock external dependencies appropriately
 
 ### Security Enforcement
 - No insecure subprocess calls (use subprocess.run with check=True)
 - SSL required for email/network operations
 - Input validation for all user data
 - Proper secret handling (no hardcoded credentials)
+- Secure file operations
 
 ## Context Engineering Approach
 
@@ -77,12 +93,14 @@ This project treats context as deliberately engineered infrastructure:
 - Code artifacts extracted to `.claude/logs/artifacts/`
 - Session summaries generated on stop
 - Pipeline state maintains task information
+- Change Orders preserve complete implementation context
 
 ### Context Resilience
 - Change Orders designed as context capsules
 - `/restore-context` command for recovery after interruption
 - Comprehensive project state tracking
 - Decision history preservation
+- Session metadata capture
 
 ## Development Workflow
 
@@ -99,6 +117,7 @@ Follow template patterns:
 - Comprehensive error handling
 - Security-first design
 - Modular architecture (separate concerns)
+- Language-appropriate patterns
 
 ### 3. Testing Phase
 Use `/test` to generate:
@@ -117,15 +136,18 @@ Use `/document` to create:
 ## File Organization
 
 ### Key Directories
-- `.claude/hooks/` - Python validation and formatting scripts
+- `.claude/hooks/` - Validation and formatting scripts
+  - `python/`, `javascript/`, `typescript/`, `php/` - Language-specific hooks
 - `.claude/commands/` - Reusable command templates  
 - `.claude/logs/` - Session artifacts (gitignored)
 - `pipeline/` - 5-stage development workflow
 - `templates/` - Template files for COs and artifacts
+- `docs/` - Project documentation
 
 ### Environment
-- `PYTHONPATH` includes `src/` directory
+- `PYTHONPATH` includes project root
 - Python hooks have access to project structure
+- Multi-language support with appropriate tooling
 - Additional directory permissions for `./docs/tasks/`
 
 ## Best Practices
@@ -135,19 +157,22 @@ Use `/document` to create:
 - Implement async-first patterns for I/O operations
 - Use dependency injection for testability
 - Follow existing codebase patterns and conventions
+- Respect language-specific idioms
 
 ### Quality Assurance
 - Let hooks guide code quality automatically
 - Run type checking and linting before commits
 - Maintain test coverage above 90%
 - Document complex business logic
+- Use language-appropriate testing frameworks
 
 ### Context Management
 - Provide relevant context in requests
 - Break large features into smaller, manageable tasks
 - Reference existing patterns when implementing similar functionality
 - Use the pipeline to track progress and maintain state
+- Leverage Change Orders for complex features
 
 ## Integration Notes
 
-This template works with projects in any language - it's not Python-specific. The hooks and validation can be adapted for different technology stacks while maintaining the same context engineering principles.
+This template works with projects in any language. The hooks and validation are configured per language while maintaining the same context engineering principles. The system automatically detects file types and applies appropriate validation and formatting tools.
