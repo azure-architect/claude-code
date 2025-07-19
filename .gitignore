@@ -278,5 +278,11 @@ temp/
 .claude/logs/summaries/
 .claude/settings.local.json
 
+# CLAUDE.md - project-specific, not for repo
+CLAUDE.md
+
+# Pipeline contents - working files, not for repo
+pipeline/*/
+
 # Deleted files backup (keep local only)
 .deleted_files/
